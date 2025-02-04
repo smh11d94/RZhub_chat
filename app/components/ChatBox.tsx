@@ -98,7 +98,7 @@ export default function ChatBox() {
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto h-[600px] flex flex-col bg-gradient-to-b from-gray-50 to-white shadow-xl">
+    <Card className="w-full max-w-2xl mx-auto h-[700px] flex flex-col bg-gradient-to-b from-gray-50 to-white shadow-xl">
       <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
         {messages.length === 0 ? (
           <div className="h-full flex items-center justify-center text-gray-400">

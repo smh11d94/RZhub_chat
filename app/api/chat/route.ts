@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     });
 
     const response = completion.choices[0].message.content ?? '';
-    const mentionsRoza = response ? /contact(.*)Roza|email(.*)Roza|reach(.*)Roza|ask(.*)Roza/i.test(response):false ;
+    const mentionsRoza = response ? /contact(.*)Roza|email(.*)Roza|reach(.*)Roza|ask(.*)Roza|check out(.*)Roza | check with(.*)Roza/i.test(response):false ;
     
     let emailBody = '';
     if (mentionsRoza) {
