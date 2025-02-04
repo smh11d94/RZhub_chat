@@ -10,10 +10,23 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.5.5",
+    "@radix-ui/react-slot": "^1.1.1",
     "aws-amplify": "^6.6.6",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "katex": "^0.16.21",
+    "lucide-react": "^0.474.0",
     "next": "14.2.10",
+    "openai": "^4.82.0",
+    "prop-types": "^15.8.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-katex": "^3.0.1",
+    "react-markdown": "^9.0.3",
+    "shadcn-ui": "^0.9.4",
+    "tailwind-merge": "^3.0.1",
+    "tailwind-scrollbar": "^4.0.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.5.1",
@@ -21,11 +34,24 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-katex": "^3.0.4",
+    "autoprefixer": "^10.4.20",
     "aws-cdk": "^2",
     "aws-cdk-lib": "^2",
     "constructs": "^10.3.0",
     "esbuild": "^0.23.1",
+    "postcss": "^8.5.1",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^4.0.3",
     "tsx": "^4.19.0",
     "typescript": "^5.6.2"
-  }
+  },
+  "description": "This repository provides a starter template for creating applications using Next.js (App Router) and AWS Amplify, emphasizing easy setup for authentication, API, and database capabilities.",
+  "main": "next.config.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
