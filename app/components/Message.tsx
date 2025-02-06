@@ -20,21 +20,36 @@ interface MessageProps {
 
 export function Message({ message }: MessageProps) {
   const renderContent = (content: string) => {
-    const formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-   
-    return formattedContent.split(/(\\\[.*?\\\]|\\\(.*?\\\))/g).map((part, index) => {
-      if (part.startsWith('\\[') && part.endsWith('\\]')) {
-        const math = part.slice(2, -2).trim();
-        return <BlockMath key={index} math={math} />;
-      }
-      if (part.startsWith('\\(') && part.endsWith('\\)')) {
-        const math = part.slice(2, -2).trim();
-        return <InlineMath key={index} math={math} />;
-      }
-      return <span key={index} dangerouslySetInnerHTML={{ __html: part }} />;
-    });
-   };
-
+    // Split content into parts that might contain math expressions
+    const parts = content.split(/((?:\\\[[\s\S]*?\\\])|(?:\\\(.*?\\\))|\*\*.*?\*\*)/g).filter(Boolean);
+    
+    return (
+      <div>
+        {parts.map((part, index) => {
+          // Handle block math
+          if (part.trim().startsWith('\\[') && part.trim().endsWith('\\]')) {
+            const math = part.trim().slice(2, -2).trim();
+            return <BlockMath key={index} math={math} />;
+          }
+          // Handle inline math
+          if (part.startsWith('\\(') && part.endsWith('\\)')) {
+            const math = part.slice(2, -2).trim();
+            return <InlineMath key={index} math={math} />;
+          }
+          // Handle bold text
+          if (part.startsWith('**') && part.endsWith('**')) {
+            return <strong key={index}>{part.slice(2, -2)}</strong>;
+          }
+          // Regular text - only create new paragraphs for double newlines
+          return part.split(/\n\n+/).map((paragraph, pIndex) => (
+            <p key={`${index}-${pIndex}`} className="mb-2">
+              {paragraph.replace(/\n/g, ' ')}
+            </p>
+          ));
+        })}
+      </div>
+    );
+  };
 
   const handleEmailClick = () => {
     if (message.emailDetails) {

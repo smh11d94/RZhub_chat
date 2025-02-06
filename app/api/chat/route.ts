@@ -6,14 +6,17 @@ const openai = new OpenAI({
 
 export async function POST(req: Request) {
   try {
-    const { message, userName } = await req.json();
+    const { message, userName, courseInfo } = await req.json();
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         { 
           role: "assistant",
-          content: `Roza is the instructer of the thermodynamics course. You are an expert in this course and her assistant. You want to make sure students learn. The student's name is ${userName}. (Keep your responses short and to the point.)
-          if there was any question about dates or times which you were not sure, tell them to contact Roza.` 
+          content: `${courseInfo.courseInstructor} is the instructor of the ${courseInfo.courseName} course. 
+          ${courseInfo.courseInfo}
+          You are an expert in this course and the instructor's assistant. You want to make sure students learn. 
+          The student's name is ${userName}. (Keep your responses short and to the point.)
+          If there was any question about dates or times which you were not sure, tell them to contact ${courseInfo.courseInstructor}.` 
         },
         { 
           role: "user", 
@@ -23,16 +26,18 @@ export async function POST(req: Request) {
     });
 
     const response = completion.choices[0].message.content ?? '';
-    const mentionsRoza = response ? /contact(.*)Roza|email(.*)Roza|reach(.*)Roza|ask(.*)Roza|check out(.*)Roza | check with(.*)Roza/i.test(response):false ;
+    const mentionsInstructor = response ? 
+      new RegExp(`contact(.*)${courseInfo.courseInstructor}|email(.*)${courseInfo.courseInstructor}|reach(.*)${courseInfo.courseInstructor}|ask(.*)${courseInfo.courseInstructor}|check out(.*)${courseInfo.courseInstructor}|check with(.*)${courseInfo.courseInstructor}`, 'i').test(response) 
+      : false;
     
     let emailBody = '';
-    if (mentionsRoza) {
+    if (mentionsInstructor) {
       const emailCompletion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [
           {
             role: "system",
-            content: `Generate a polite and friendly email body to Professor Roza about the following thermodynamics course question. Keep it concise but detailed enough to explain the issue. The email is from ${userName}`
+            content: `Generate a polite and friendly email body to Professor ${courseInfo.courseInstructor} about the following ${courseInfo.courseName} course question. Keep it concise but detailed enough to explain the issue. The email is from ${userName}`
           },
           {
             role: "user",
@@ -45,10 +50,10 @@ export async function POST(req: Request) {
 
     return Response.json({
       message: response,
-      includeEmailButton: mentionsRoza,
-      emailDetails: mentionsRoza ? {
-        mailto: "roza.ghaemi@ubc.ca",
-        subject: `Thermodynamics Course Question [${userName}]`,
+      includeEmailButton: mentionsInstructor,
+      emailDetails: mentionsInstructor ? {
+        mailto: "instructor.email@university.edu", // You might want to add email to your CourseInfo model
+        subject: `${courseInfo.courseName} Course Question [${userName}]`,
         body: emailBody
       } : null
     });

@@ -1,8 +1,9 @@
 body {
     margin: 0;
-    background: linear-gradient(180deg, rgb(117, 81, 194), rgb(255, 255, 255));
+    background-image: url("https://ischool.cms.arts.ubc.ca/wp-content/uploads/sites/46/2022/07/About-Featured-Image-UBC-iSchool.jpg");
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
+    
     justify-content: center;
     align-items: center;
     background-attachment: fixed;
